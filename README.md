@@ -9,7 +9,7 @@ This project is an algorithmic trading system built using Python and Angel One S
 -Strategy-based trading (customizable rules)
 
 ### Repository Structure
-  ---
+  ```
   algo-trading-project/
   │── source_code/ # Core trading scripts and strategy logic
   │ ├── main.py # Orchestrates the trading loop and execution flow
@@ -26,7 +26,8 @@ This project is an algorithmic trading system built using Python and Angel One S
   │
   │── requirements.txt # Python dependencies
   │── README.md # Project documentation
-  ---
+  ```
+  
 
 ### Requirements
 - OS: Windows 10+
