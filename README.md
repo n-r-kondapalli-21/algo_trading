@@ -34,8 +34,8 @@ algo-trading-project/
 
 ### Installation
 Clone the repository:
-git clone https://github.com/your-username/algo-trading-project.git
-cd algo-trading-project
+git https://github.com/n-r-kondapalli-21/algo_trading
+cd algo_trading
 
 Create and activate a virtual environment (optional but recommended):
 conda create -n algo_trading python=3.9
