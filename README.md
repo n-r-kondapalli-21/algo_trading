@@ -11,21 +11,22 @@ This project is an algorithmic trading system built using Python and Angel One S
 ### Repository Structure
 
 algo-trading-project/
-│── source_code/                     # Core trading scripts and strategy logic
-│   ├── main.py                      # Orchestrates the trading loop and execution flow
-│   ├── login.py                     # SmartAPI authentication; instrument master download; DataFrame helpers
-│   ├── pull_livedata.py             # Utilities to fetch LTP for indices and symbols
-│   ├── get_index_expirydate_algo.py # Finds nearest/monthly expiry; fetches index & futures LTP
-│   ├── index_name_formatting_algo.py# Builds option symbols; resolves token, lot size, LTP, OI
-│   ├── get_option_greeks_algo.py    # Fetches option Greeks (Delta, Gamma, Theta, Vega) via SmartAPI
-│   └── transaction_cost_algo.py     # Estimates transaction charges for BUY/SELL/HOLD operations
-│
-│── application/                     # Main application files to run trading bot
-│
-│── sample_test/                     # Example test cases or demo scripts
-│
-│── requirements.txt                 # Python dependencies
-│── README.md                        # Project documentation
+ source_code/                 # Core trading scripts and strategy logic
+ main.py                      # Orchestrates the trading loop and execution flow
+ login.py                     # SmartAPI authentication; instrument master download; DataFrame helpers
+ pull_livedata.py             # Utilities to fetch LTP for indices and symbols
+ get_index_expirydate_algo.py # Finds nearest/monthly expiry; fetches index & futures LTP
+ index_name_formatting_algo.py# Builds option symbols; resolves token, lot size, LTP, OI
+ get_option_greeks_algo.py    # Fetches option Greeks (Delta, Gamma, Theta, Vega) via SmartAPI
+ transaction_cost_algo.py     # Estimates transaction charges for BUY/SELL/HOLD operations
+
+ application/                     # Main application files to run trading bot
+ 
+ sample_test/                     # Example test cases or demo scripts
+ 
+ requirements.txt                 # Python dependencies
+ 
+ README.md                        # Project documentation
 
 ### Requirements
 - OS: Windows 10+
