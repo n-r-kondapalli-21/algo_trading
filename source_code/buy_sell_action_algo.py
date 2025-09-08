@@ -7,17 +7,32 @@ Created on Sat Aug 30 16:44:02 2025
 from datetime import datetime
 
 
-
-
-
 last_action = None
 sno = 0 
 
-def buy_sell_action(buy_sell_quantity, delta):
+def buy_sell_action(buy_sell_quantity, delta, initial_action="BUY", threshold_buy=41.9, threshold_sell=41.8):
     """
-    1. First action = SELL
-    2. After SELL, wait until (quantity * delta > 42) → BUY
-    3. After BUY, next action = SELL again (no condition)
+    Flexible BUY/SELL logic:
+    
+    Parameters
+    ----------
+    buy_sell_quantity : int or float
+        The trade quantity used in the condition check.
+    delta : float
+        The delta value (sensitivity factor).
+    initial_action : str ("BUY" or "SELL")
+        The very first action (set manually).
+    threshold_buy : float
+        Threshold for moving from BUY → SELL.
+    threshold_sell : float
+        Threshold for moving from SELL → BUY.
+
+    Rules
+    -----
+    1. First action = given by initial_action
+    2. After BUY → SELL only when (quantity * delta > threshold_buy)
+    3. After SELL → BUY only when (quantity * delta > threshold_sell)
+    4. If condition not met → HOLD
     """
     global last_action, sno
 
@@ -25,19 +40,20 @@ def buy_sell_action(buy_sell_quantity, delta):
     condition = buy_sell_quantity * delta
 
     if last_action is None:
-        # First action
-        action = "SELL"
+        # Manual first action
+        action = initial_action
 
-    elif last_action == "SELL":
-        # After SELL → BUY only when condition is met
-        if condition > 42:
-            action = "BUY"
+    elif last_action == "BUY":
+        if condition > threshold_buy:
+            action = "SELL"
         else:
             action = "HOLD"
 
-    elif last_action == "BUY":
-        # After BUY → always SELL again
-        action = "SELL"
+    elif last_action == "SELL":
+        if condition > threshold_sell:
+            action = "BUY"
+        else:
+            action = "HOLD"
 
     # Timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -57,60 +73,4 @@ def buy_sell_action(buy_sell_quantity, delta):
 
 
 
-"""
-function name: buy_sell_action
-this function decides whether to take a BUY, SELL, or HOLD action 
-based on the last action taken and the condition (quantity * delta).
 
-Parameters:
-buy_sell_quantity : int or float
-    The trade quantity used in the condition check.
-delta : float
-    The delta value (sensitivity of option price to underlying asset changes).
-
-Returns:
-tuple
-    A tuple (sno, timestamp, action) where:
-        - sno is a sequential number for each decision step.
-        - timestamp is the date and time when the action was decided.
-        - action is one of "BUY", "SELL", or "HOLD" based on the trading logic.
-"""
-
-# # Initialize
-# last_action = None
-# sno = 0 
-
-# def buy_sell_action(buy_sell_quantity, delta):
-#     """
-#     1. First action = BUY
-#     2. After BUY, wait until (quantity * delta > 20) → SELL
-#     3. After SELL, next action = BUY again (no condition)
-#     """
-#     global last_action, sno
-
-#     sno += 1
-#     condition = buy_sell_quantity * delta
-
-#     if last_action is None:
-#         # First action
-#         action = "BUY"
-
-#     elif last_action == "BUY":
-#         # After BUY → SELL only when condition is met
-#         if condition > 41.9:
-#             action = "SELL"
-#         else:
-#             action = "HOLD"
-
-#     elif last_action == "SELL":
-#         # After SELL → always BUY again
-#         action = "BUY"
-
-#     # Timestamp
-#     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-#     # Update last_action only when action is BUY or SELL
-#     if action in ["BUY", "SELL"]:
-#         last_action = action
-
-#     return sno, timestamp, action
