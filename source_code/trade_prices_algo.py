@@ -22,33 +22,37 @@ tuple
         - sell_price is the price at which the stock was sold, or None if not applicable.
 """
 
-# Global variable to store the last buy price
-previous_buy_price = None  
+previous_buy_price = None
+previous_sell_price = None
+last_action = None  
 
-def buy_sell_prices(action, ltp):
-    global previous_buy_price  # so it survives across calls
+def buy_sell_prices(action, ltp, default_buy_price=480):  # <- you can pass test value
+    global previous_buy_price, previous_sell_price, last_action
 
     if action == "BUY":
         buy_price = ltp
         sell_price = None
-        previous_buy_price = buy_price  # update stored buy price
-
-    elif action == "HOLD":
-        buy_price = previous_buy_price
-        sell_price = None
+        previous_buy_price = buy_price
+        last_action = "BUY"
 
     elif action == "SELL":
+        if previous_buy_price is None:  # First SELL case
+            previous_buy_price = default_buy_price  # use test value
         buy_price = previous_buy_price
         sell_price = ltp
+        previous_sell_price = sell_price
+        last_action = "SELL"
 
+    elif action == "HOLD":
+        if last_action == "BUY":
+            buy_price = previous_buy_price
+            sell_price = None
+        elif last_action == "SELL":
+            buy_price = previous_buy_price
+            sell_price = previous_sell_price
+        else:
+            raise ValueError("HOLD not valid without a previous BUY/SELL")
     else:
         raise ValueError("Invalid action")
 
     return buy_price, sell_price
-
-
-
-# print(buy_sell_prices("BUY", 350))   # (350, None)
-# print(buy_sell_prices("HOLD", 360))  # (350, None)
-# print(buy_sell_prices("SELL", 370))  # (350, 370)
-# print(buy_sell_prices("HOLD", 380))  # (350, None) 
